@@ -39,6 +39,14 @@ export async function POST(req: Request) {
     const { name, dietary, dietaryNotes, songRecommendation, website } =
       (await req.json()) as RSVPBody
 
+      console.log('RSVP payload received:', {
+  name,
+  dietary,
+  dietaryNotes,
+  songRecommendation,
+  website,
+})
+
     // Honeypot
     if (website) {
       return NextResponse.json({ success: true })
@@ -68,6 +76,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Dietary notes are too long.' }, { status: 400 })
     }
 
+    if (
+  !process.env.SMTP_HOST ||
+  !process.env.SMTP_PORT ||
+  !process.env.EMAIL_USER ||
+  !process.env.EMAIL_PASS ||
+  !process.env.EMAIL_RECEIVER
+) {
+  return NextResponse.json(
+    { error: 'Missing email configuration.' },
+    { status: 500 }
+  )
+}
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587', 10),
@@ -77,6 +98,7 @@ export async function POST(req: Request) {
         pass: process.env.EMAIL_PASS,
       },
     })
+
 
     const formattedDietary =
       dietary === 'other'
