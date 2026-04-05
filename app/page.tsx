@@ -1,5 +1,5 @@
 import Hero from './components/Hero'
-import TimelineSection from './components/TImelineSection'
+import TimelineSection from './components/TimelineSection'
 import RSVPSection from './components/RSVPSection'
 
 export default function Page() {
