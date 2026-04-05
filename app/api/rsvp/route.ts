@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer'
 // Simple in-memory rate limiter
 const rateLimitMap = new Map<string, { count: number; time: number }>()
 const WINDOW = 60_000 // 1 minute
-const MAX = 5 // max submissions per IP per window
+const MAX = 5
 
 function getClientIp(req: Request) {
   const xff = req.headers.get('x-forwarded-for')
@@ -17,12 +17,12 @@ type RSVPBody = {
   dietary?: string
   dietaryNotes?: string
   songRecommendation?: string
-  website?: string // honeypot
+  website?: string
 }
 
 export async function POST(req: Request) {
   try {
-    // Rate limit early
+    // Rate limit
     const ip = getClientIp(req)
     const now = Date.now()
     const record = rateLimitMap.get(ip)
@@ -38,14 +38,6 @@ export async function POST(req: Request) {
 
     const { name, dietary, dietaryNotes, songRecommendation, website } =
       (await req.json()) as RSVPBody
-
-      console.log('RSVP payload received:', {
-  name,
-  dietary,
-  dietaryNotes,
-  songRecommendation,
-  website,
-})
 
     // Honeypot
     if (website) {
@@ -76,29 +68,40 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Dietary notes are too long.' }, { status: 400 })
     }
 
+    // ✅ ENV CHECK (critical)
     if (
-  !process.env.SMTP_HOST ||
-  !process.env.SMTP_PORT ||
-  !process.env.EMAIL_USER ||
-  !process.env.EMAIL_PASS ||
-  !process.env.EMAIL_RECEIVER
-) {
-  return NextResponse.json(
-    { error: 'Missing email configuration.' },
-    { status: 500 }
-  )
-}
+      !process.env.SMTP_HOST ||
+      !process.env.SMTP_PORT ||
+      !process.env.EMAIL_USER ||
+      !process.env.EMAIL_PASS ||
+      !process.env.RECEIVER_EMAIL
+    ) {
+      console.error('Missing env vars:', {
+        SMTP_HOST: process.env.SMTP_HOST,
+        SMTP_PORT: process.env.SMTP_PORT,
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASS: process.env.EMAIL_PASS ? 'SET' : 'MISSING',
+        RECEIVER_EMAIL: process.env.RECEIVER_EMAIL,
+      })
+
+      return NextResponse.json(
+        { error: 'Missing email configuration.' },
+        { status: 500 }
+      )
+    }
+
+    // Optional debug (remove later)
+    console.log('ENV OK — sending email')
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: parseInt(process.env.SMTP_PORT || '587', 10) === 465,
+      port: parseInt(process.env.SMTP_PORT, 10),
+      secure: parseInt(process.env.SMTP_PORT, 10) === 465,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     })
-
 
     const formattedDietary =
       dietary === 'other'
@@ -107,7 +110,7 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: `Wedding RSVP <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_RECEIVER,
+      to: process.env.RECEIVER_EMAIL, // ✅ FIXED
       subject: `RSVP Submission - ${name.trim()}`,
       text: `New RSVP Submission
 
@@ -123,6 +126,9 @@ IP: ${ip}
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('RSVP email sending error:', error)
-    return NextResponse.json({ error: 'Failed to send RSVP.' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to send RSVP.' },
+      { status: 500 }
+    )
   }
 }
