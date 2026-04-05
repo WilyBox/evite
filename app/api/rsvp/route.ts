@@ -37,13 +37,14 @@ export async function POST(req: Request) {
       rateLimitMap.set(ip, { count: 1, time: now })
     }
 
-    const { name, dietary, dietaryNotes, songRecommendation, website } =
+    const { attendance, name, dietary, dietaryNotes, songRecommendation, website } =
       (await req.json()) as RSVPBody
 
     // Honeypot
     if (website) {
       return NextResponse.json({ success: true })
     }
+
 
     // Validation
     if (!name?.trim()) {
@@ -114,8 +115,9 @@ export async function POST(req: Request) {
       to: process.env.RECEIVER_EMAIL, // ✅ FIXED
       subject: `RSVP Submission - ${name.trim()}`,
       text: `New RSVP Submission
-
+      
 Name: ${name.trim()}
+Attendance: ${attendance}
 Dietary requirement: ${formattedDietary}
 Song recommendation: ${songRecommendation?.trim() || 'None provided'}
 IP: ${ip}
