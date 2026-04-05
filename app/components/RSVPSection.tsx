@@ -16,6 +16,7 @@ const dietaryOptions = [
 ]
 
 export default function RSVPSection() {
+  const [attendance, setAttendance] = useState<'yes' | 'no'>('yes')
   const [name, setName] = useState('')
   const [dietary, setDietary] = useState('nil')
   const [dietaryNotes, setDietaryNotes] = useState('')
@@ -39,6 +40,7 @@ export default function RSVPSection() {
           name,
           dietary,
           dietaryNotes,
+          attendance,
           songRecommendation,
           website,
         }),
@@ -67,14 +69,37 @@ export default function RSVPSection() {
       <div className="mx-auto max-w-3xl px-6">
         <div className="mx-auto max-w-2xl">
           <h2
-            className={`${inter.className} text-center text-sm font-semibold uppercase tracking-[0.35em] text-gray-500`}
+            className={`${inter.className} text-center text-lg font-semibold uppercase tracking-[0.35em] text-gray-500`}
           >
             RSVP
           </h2>
 
-          <p className="mt-4 text-center text-sm text-gray-600">
-            Please let us know your details below.
-          </p>
+
+
+          <fieldset>
+ 
+  <div className="mt-4 flex justify-center items-center gap-8">
+    {[
+      { id: 'yes', label: "Yes, I'll be there" },
+      { id: 'no', label: "Sorry, I can't make it" },
+    ].map((option) => (
+      <div key={option.id} className="flex items-center gap-2">
+        <input
+          id={option.id}
+          name="attendance"
+          type="radio"
+          value={option.id}
+          checked={attendance === option.id}
+          onChange={(e) => setAttendance(e.target.value as 'yes' | 'no')}
+          className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
+        />
+        <label htmlFor={option.id} className="text-sm text-gray-700">
+          {option.label}
+        </label>
+      </div>
+    ))}
+  </div>
+</fieldset>
 
           <form onSubmit={handleSubmit} className="mt-14 space-y-10">
             <div>
@@ -93,7 +118,10 @@ export default function RSVPSection() {
               />
             </div>
 
-            <fieldset>
+            {attendance === 'yes' && (
+  <>
+    {/* Dietary fieldset */
+               <fieldset>
               <legend className="block text-sm font-medium text-gray-900">
                 Dietary requirements
               </legend>
@@ -135,8 +163,12 @@ export default function RSVPSection() {
                 </div>
               )}
             </fieldset>
-
-            <div>
+    
+    }
+    
+    
+    {/* Song recommendation */
+                <div>
               <label
                 htmlFor="songRecommendation"
                 className="block text-sm font-medium text-gray-900"
@@ -153,6 +185,14 @@ export default function RSVPSection() {
                 placeholder="Any song you'd love to hear on the night"
               />
             </div>
+    
+    }
+  </>
+)}
+
+ 
+
+
 
             <div className="hidden">
               <label htmlFor="website">Website</label>

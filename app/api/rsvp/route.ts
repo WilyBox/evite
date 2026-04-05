@@ -18,6 +18,7 @@ type RSVPBody = {
   dietaryNotes?: string
   songRecommendation?: string
   website?: string
+  attendance?: string
 }
 
 export async function POST(req: Request) {

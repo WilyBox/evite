@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section className="relative isolate min-h-screen overflow-hidden bg-stone-950">
       <img
-        src="/images/location/courtyard.webp"
+        src="/images/location/centered-courtyard.webp"
         alt="Dunglass Estate courtyard"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-center brightness-[0.8]"
       />
