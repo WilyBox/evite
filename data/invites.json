@@ -1,0 +1,79 @@
+[
+  {
+    "partyId": "maclean-1",
+    "guests": [
+      "Jane MacLean",
+      "Paul MacLean"
+    ]
+  },
+  {
+    "partyId": "doohan-1",
+    "guests": [
+      "Eamon Doohan",
+      "Eileen Doohan"
+    ]
+  },
+  {
+    "partyId": "riley-1",
+    "guests": [
+      "David Riley",
+      "Lynn Riley"
+    ]
+  },
+  {
+    "partyId": "duddy-1",
+    "guests": [
+      "Jack Duddy",
+      "Stephanie Duddy"
+    ]
+  },
+  {
+    "partyId": "maclean-2",
+    "guests": [
+      "Callum MacLean",
+      "Victoria Cowan"
+    ]
+  },
+  {
+    "partyId": "doohan-2",
+    "guests": [
+      "John-Paul Doohan",
+      "Una McConnellogue"
+    ]
+  },
+  {
+    "partyId": "harkin-1",
+    "guests": [
+      "Kevin Harkin",
+      "Sara Harkin"
+    ]
+  },
+  {
+    "partyId": "doohan-3",
+    "guests": [
+      "Aoife Doohan",
+      "Freya"
+    ]
+  },
+  {
+    "partyId": "sweeney-1",
+    "guests": [
+      "Christopher Sweeney",
+      "Roisin"
+    ]
+  },
+  {
+    "partyId": "robinson-1",
+    "guests": [
+      "Eoghann Robinson",
+      "Lukasz Lesnik"
+    ]
+  },
+  {
+    "partyId": "baker-1",
+    "guests": [
+      "Maebh Baker",
+      "Gavin Baker"
+    ]
+  }
+]

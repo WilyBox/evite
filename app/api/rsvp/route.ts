@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
+import { loadInvites, findPartyByName, normaliseName } from '@/lib/invites'
 
 // Simple in-memory rate limiter
 const rateLimitMap = new Map<string, { count: number; time: number }>()
@@ -12,22 +11,6 @@ function getClientIp(req: Request) {
   const xff = req.headers.get('x-forwarded-for')
   if (!xff) return 'unknown'
   return xff.split(',')[0].trim()
-}
-
-function normaliseName(value: string) {
-  return value.trim().toLowerCase().replace(/\s+/g, ' ')
-}
-
-async function loadPlusOneNames() {
-  const filePath = path.join(process.cwd(), 'data', 'plus-ones.txt')
-  const file = await readFile(filePath, 'utf8')
-
-  return new Set(
-    file
-      .split(/\r?\n/)
-      .map((line) => normaliseName(line))
-      .filter(Boolean)
-  )
 }
 
 type RSVPBody = {
@@ -87,8 +70,22 @@ export async function POST(req: Request) {
     }
 
     const cleanName = name.trim()
-    const plusOneNames = await loadPlusOneNames()
-    const hasPlusOne = plusOneNames.has(normaliseName(cleanName))
+
+    // Reusable invite lookup logic
+    const invites = await loadInvites()
+    const party = findPartyByName(invites, cleanName)
+
+    if (!party) {
+      return NextResponse.json(
+        { error: 'We could not find your invitation details.' },
+        { status: 400 }
+      )
+    }
+
+    const linkedGuestName =
+      party.guests.find((guest) => normaliseName(guest) !== normaliseName(cleanName)) ?? null
+
+    const hasLinkedGuest = Boolean(linkedGuestName)
 
     if (attendance === 'yes') {
       if (!dietary?.trim()) {
@@ -102,38 +99,44 @@ export async function POST(req: Request) {
         )
       }
 
-if (hasPlusOne) {
-  if (!plusOneAttendance || !['yes', 'no'].includes(plusOneAttendance)) {
-    return NextResponse.json(
-      { error: 'Please confirm whether your plus one is attending.' },
-      { status: 400 }
-    )
-  }
+      if (hasLinkedGuest) {
+        if (!plusOneAttendance || !['yes', 'no'].includes(plusOneAttendance)) {
+          return NextResponse.json(
+            { error: 'Please confirm whether your linked guest is attending.' },
+            { status: 400 }
+          )
+        }
 
-  if (plusOneAttendance === 'yes') {
-    if (!plusOneName?.trim()) {
-      return NextResponse.json(
-        { error: 'Plus one name is required.' },
-        { status: 400 }
-      )
-    }
+        if (plusOneAttendance === 'yes') {
+          if (!plusOneName?.trim()) {
+            return NextResponse.json(
+              { error: 'Linked guest name is required.' },
+              { status: 400 }
+            )
+          }
 
-    if (!plusOneDietary?.trim()) {
-      return NextResponse.json(
-        { error: 'Plus one dietary requirement is required.' },
-        { status: 400 }
-      )
-    }
+          if (normaliseName(plusOneName) !== normaliseName(linkedGuestName!)) {
+            return NextResponse.json(
+              { error: `The linked guest for ${cleanName} is ${linkedGuestName}.` },
+              { status: 400 }
+            )
+          }
 
-    if (plusOneDietary === 'other' && !plusOneDietaryNotes?.trim()) {
-      return NextResponse.json(
-        { error: 'Please specify your plus one dietary requirements.' },
-        { status: 400 }
-      )
-    }
-  }
-}
+          if (!plusOneDietary?.trim()) {
+            return NextResponse.json(
+              { error: 'Linked guest dietary requirement is required.' },
+              { status: 400 }
+            )
+          }
 
+          if (plusOneDietary === 'other' && !plusOneDietaryNotes?.trim()) {
+            return NextResponse.json(
+              { error: 'Please specify your linked guest dietary requirements.' },
+              { status: 400 }
+            )
+          }
+        }
+      }
     }
 
     if (songRecommendation && songRecommendation.length > 500) {
@@ -146,7 +149,7 @@ if (hasPlusOne) {
 
     if (plusOneDietaryNotes && plusOneDietaryNotes.length > 500) {
       return NextResponse.json(
-        { error: 'Plus one dietary notes are too long.' },
+        { error: 'Linked guest dietary notes are too long.' },
         { status: 400 }
       )
     }
@@ -190,12 +193,12 @@ if (hasPlusOne) {
           : `${dietary?.charAt(0).toUpperCase() || ''}${dietary?.slice(1) || ''}`
         : 'N/A'
 
-const formattedPlusOneDietary =
-  hasPlusOne && attendance === 'yes' && plusOneAttendance === 'yes'
-    ? plusOneDietary === 'other'
-      ? `Other - ${plusOneDietaryNotes?.trim() || ''}`
-      : `${plusOneDietary?.charAt(0).toUpperCase() || ''}${plusOneDietary?.slice(1) || ''}`
-    : 'N/A'
+    const formattedLinkedGuestDietary =
+      hasLinkedGuest && attendance === 'yes' && plusOneAttendance === 'yes'
+        ? plusOneDietary === 'other'
+          ? `Other - ${plusOneDietaryNotes?.trim() || ''}`
+          : `${plusOneDietary?.charAt(0).toUpperCase() || ''}${plusOneDietary?.slice(1) || ''}`
+        : 'N/A'
 
     const mailOptions = {
       from: `Wedding RSVP <${process.env.EMAIL_USER}>`,
@@ -203,16 +206,17 @@ const formattedPlusOneDietary =
       subject: `RSVP Submission - ${cleanName}`,
       text: `New RSVP Submission
 
+Party ID: ${party.partyId}
 Name: ${cleanName}
 Attendance: ${attendance}
 
 Dietary requirement: ${formattedDietary}
 Song recommendation: ${songRecommendation?.trim() || 'None provided'}
 
-Plus one allowed: ${hasPlusOne ? 'Yes' : 'No'}
-Plus one attendance: ${hasPlusOne && attendance === 'yes' ? plusOneAttendance || 'Not provided' : 'N/A'}
-Plus one name: ${hasPlusOne && attendance === 'yes' && plusOneAttendance === 'yes' ? plusOneName?.trim() || 'Not provided' : 'N/A'}
-Plus one dietary requirement: ${formattedPlusOneDietary}
+Linked guest exists: ${hasLinkedGuest ? 'Yes' : 'No'}
+Linked guest name: ${hasLinkedGuest ? linkedGuestName : 'N/A'}
+Linked guest attendance: ${hasLinkedGuest && attendance === 'yes' ? plusOneAttendance || 'Not provided' : 'N/A'}
+Linked guest dietary requirement: ${formattedLinkedGuestDietary}
 
 IP: ${ip}
 `,
@@ -222,7 +226,9 @@ IP: ${ip}
 
     return NextResponse.json({
       success: true,
-      hasPlusOne,
+      partyId: party.partyId,
+      hasLinkedGuest,
+      linkedGuestName,
     })
   } catch (error) {
     console.error('RSVP email sending error:', error)

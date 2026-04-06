@@ -28,6 +28,14 @@ export default function Hero() {
 
       <div className="flex min-h-screen items-center justify-center px-6">
         <div className="-mt-8 text-center text-white sm:-mt-12">
+          <div className="mx-auto my-5 h-px w-20 bg-white/50" />
+
+          <p
+            className={`${inter.className} mb-5 text-xs font-bold uppercase tracking-[0.38em] text-white/75 sm:text-sm`}
+          >
+            You are invited to the wedding of
+          </p>
+
           <h1 className={`${italianno.className} text-6xl leading-none sm:text-8xl md:text-[9rem]`}>
             <span>Libby</span>
 

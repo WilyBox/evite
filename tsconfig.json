@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "scripts/build-invites.js", "scripts/build-invites.js"  ],
   "exclude": ["node_modules"]
 }
