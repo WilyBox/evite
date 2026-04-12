@@ -82,8 +82,9 @@ export async function POST(req: Request) {
       )
     }
 
-    const linkedGuestName =
-      party.guests.find((guest) => normaliseName(guest) !== normaliseName(cleanName)) ?? null
+    const linkedGuestName = party.guests.find(
+  (guest) => normaliseName(guest) !== normaliseName(cleanName)
+)
 
     const hasLinkedGuest = Boolean(linkedGuestName)
 
@@ -99,6 +100,8 @@ export async function POST(req: Request) {
         )
       }
 
+
+
       if (hasLinkedGuest) {
         if (!plusOneAttendance || !['yes', 'no'].includes(plusOneAttendance)) {
           return NextResponse.json(
@@ -107,36 +110,45 @@ export async function POST(req: Request) {
           )
         }
 
-        if (plusOneAttendance === 'yes') {
-          if (!plusOneName?.trim()) {
-            return NextResponse.json(
-              { error: 'Linked guest name is required.' },
-              { status: 400 }
-            )
-          }
+    if (plusOneAttendance === 'yes') {
+    if (!linkedGuestName) {
+      return NextResponse.json(
+        { error: 'No linked guest found for this invite.' },
+        { status: 400 }
+      )
+    }
 
-          if (normaliseName(plusOneName) !== normaliseName(linkedGuestName!)) {
-            return NextResponse.json(
-              { error: `The linked guest for ${cleanName} is ${linkedGuestName}.` },
-              { status: 400 }
-            )
-          }
+    if (!plusOneName?.trim()) {
+      return NextResponse.json(
+        { error: 'Linked guest name is required.' },
+        { status: 400 }
+      )
+    }
 
-          if (!plusOneDietary?.trim()) {
-            return NextResponse.json(
-              { error: 'Linked guest dietary requirement is required.' },
-              { status: 400 }
-            )
-          }
+    if (normaliseName(plusOneName) !== normaliseName(linkedGuestName)) {
+      return NextResponse.json(
+        { error: `The linked guest for ${cleanName} is ${linkedGuestName}.` },
+        { status: 400 }
+      )
+    }
 
-          if (plusOneDietary === 'other' && !plusOneDietaryNotes?.trim()) {
-            return NextResponse.json(
-              { error: 'Please specify your linked guest dietary requirements.' },
-              { status: 400 }
-            )
-          }
-        }
-      }
+    if (!plusOneDietary?.trim()) {
+      return NextResponse.json(
+        { error: 'Linked guest dietary requirement is required.' },
+        { status: 400 }
+      )
+    }
+
+    if (plusOneDietary === 'other' && !plusOneDietaryNotes?.trim()) {
+      return NextResponse.json(
+        { error: 'Please specify your linked guest dietary requirements.' },
+        { status: 400 }
+      )
+    }
+  }
+}
+
+
     }
 
     if (songRecommendation && songRecommendation.length > 500) {
@@ -170,10 +182,7 @@ export async function POST(req: Request) {
         RECEIVER_EMAIL: process.env.RECEIVER_EMAIL,
       })
 
-      return NextResponse.json(
-        { error: 'Missing email configuration.' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Missing email configuration.' }, { status: 500 })
     }
 
     const transporter = nodemailer.createTransport({
@@ -207,6 +216,7 @@ export async function POST(req: Request) {
       text: `New RSVP Submission
 
 Party ID: ${party.partyId}
+Wedding party: ${party.weddingParty ? 'Yes' : 'No'}
 Name: ${cleanName}
 Attendance: ${attendance}
 
@@ -227,14 +237,12 @@ IP: ${ip}
     return NextResponse.json({
       success: true,
       partyId: party.partyId,
+      weddingParty: party.weddingParty,
       hasLinkedGuest,
       linkedGuestName,
     })
   } catch (error) {
     console.error('RSVP email sending error:', error)
-    return NextResponse.json(
-      { error: 'Failed to send RSVP.' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to send RSVP.' }, { status: 500 })
   }
 }

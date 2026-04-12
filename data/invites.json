@@ -1,6 +1,7 @@
 [
   {
     "partyId": "maclean-1",
+    "weddingParty": true,
     "guests": [
       "Jane MacLean",
       "Paul MacLean"
@@ -8,6 +9,7 @@
   },
   {
     "partyId": "doohan-1",
+    "weddingParty": true,
     "guests": [
       "Eamon Doohan",
       "Eileen Doohan"
@@ -15,6 +17,7 @@
   },
   {
     "partyId": "riley-1",
+    "weddingParty": true,
     "guests": [
       "David Riley",
       "Lynn Riley"
@@ -22,6 +25,7 @@
   },
   {
     "partyId": "duddy-1",
+    "weddingParty": true,
     "guests": [
       "Jack Duddy",
       "Stephanie Duddy"
@@ -29,6 +33,7 @@
   },
   {
     "partyId": "maclean-2",
+    "weddingParty": true,
     "guests": [
       "Callum MacLean",
       "Victoria Cowan"
@@ -36,6 +41,7 @@
   },
   {
     "partyId": "doohan-2",
+    "weddingParty": true,
     "guests": [
       "John-Paul Doohan",
       "Una McConnellogue"
@@ -43,6 +49,7 @@
   },
   {
     "partyId": "harkin-1",
+    "weddingParty": true,
     "guests": [
       "Kevin Harkin",
       "Sara Harkin"
@@ -50,6 +57,7 @@
   },
   {
     "partyId": "doohan-3",
+    "weddingParty": true,
     "guests": [
       "Aoife Doohan",
       "Freya"
@@ -57,6 +65,7 @@
   },
   {
     "partyId": "sweeney-1",
+    "weddingParty": true,
     "guests": [
       "Christopher Sweeney",
       "Roisin"
@@ -64,6 +73,7 @@
   },
   {
     "partyId": "robinson-1",
+    "weddingParty": true,
     "guests": [
       "Eoghann Robinson",
       "Lukasz Lesnik"
@@ -71,9 +81,131 @@
   },
   {
     "partyId": "baker-1",
+    "weddingParty": true,
     "guests": [
       "Maebh Baker",
       "Gavin Baker"
+    ]
+  },
+  {
+    "partyId": "duddy-2",
+    "weddingParty": false,
+    "guests": [
+      "Kevin Duddy",
+      "Anne Duddy"
+    ]
+  },
+  {
+    "partyId": "pomphrey-1",
+    "weddingParty": false,
+    "guests": [
+      "Tracy Pomphrey",
+      "Scott Pomphrey"
+    ]
+  },
+  {
+    "partyId": "ferguson-1",
+    "weddingParty": false,
+    "guests": [
+      "Karl Ferguson",
+      "Laura Feruguson"
+    ]
+  },
+  {
+    "partyId": "carter-1",
+    "weddingParty": false,
+    "guests": [
+      "Karen Carter",
+      "George Carter"
+    ]
+  },
+  {
+    "partyId": "hunter-1",
+    "weddingParty": false,
+    "guests": [
+      "Gemma Hunter",
+      "Andrea Murray",
+      "Miriam Hunter"
+    ]
+  },
+  {
+    "partyId": "doohan-4",
+    "weddingParty": false,
+    "guests": [
+      "Colm Doohan",
+      "Michelle Doohan"
+    ]
+  },
+  {
+    "partyId": "maclean-3",
+    "weddingParty": false,
+    "guests": [
+      "Bob MacLean",
+      "Phylis MacLean"
+    ]
+  },
+  {
+    "partyId": "maclean-4",
+    "weddingParty": false,
+    "guests": [
+      "Rina MacLean",
+      "Jimmy MacLean"
+    ]
+  },
+  {
+    "partyId": "buchan-1",
+    "weddingParty": false,
+    "guests": [
+      "Anna Buchan",
+      "Gordon Buchan"
+    ]
+  },
+  {
+    "partyId": "iqbal-1",
+    "weddingParty": false,
+    "guests": [
+      "Shaima Iqbal",
+      "Ahmed Hassane"
+    ]
+  },
+  {
+    "partyId": "caves-1",
+    "weddingParty": false,
+    "guests": [
+      "Gavin Caves",
+      "Marien Caves"
+    ]
+  },
+  {
+    "partyId": "copeland-1",
+    "weddingParty": false,
+    "guests": [
+      "Nicola Copeland",
+      "Graeme Beveridge"
+    ]
+  },
+  {
+    "partyId": "milne-1",
+    "weddingParty": false,
+    "guests": [
+      "Mhairi Milne",
+      "Ross Landells"
+    ]
+  },
+  {
+    "partyId": "x-1",
+    "weddingParty": false,
+    "guests": [
+      "Ann X",
+      "X"
+    ]
+  },
+  {
+    "partyId": "y-1",
+    "weddingParty": false,
+    "guests": [
+      "Mary Y",
+      "Y"
     ]
   }
 ]

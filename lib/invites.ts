@@ -3,6 +3,7 @@ import path from 'node:path'
 
 export type InviteParty = {
   partyId: string
+  weddingParty: boolean
   guests: string[]
 }
 

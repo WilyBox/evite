@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { Inter } from 'next/font/google'
+import { useRouter } from 'next/navigation'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,17 +25,33 @@ type PartyLookupResponse =
       found: true
       partyId: string
       guests: string[]
+      weddingParty: boolean
     }
   | {
       found: false
     }
 
+type RSVPSubmitResponse =
+  | {
+      success: true
+      partyId: string
+      weddingParty: boolean
+      hasLinkedGuest: boolean
+      linkedGuestName?: string
+    }
+  | {
+      error?: string
+    }
+
 export default function RSVPSection() {
+  const router = useRouter()
+
   const [attendance, setAttendance] = useState<'yes' | 'no'>('yes')
   const [name, setName] = useState('')
   const [partyId, setPartyId] = useState('')
   const [partyGuests, setPartyGuests] = useState<string[]>([])
   const [isCheckingParty, setIsCheckingParty] = useState(false)
+  const [isWeddingParty, setIsWeddingParty] = useState(false)
 
   const [dietary, setDietary] = useState('nil')
   const [dietaryNotes, setDietaryNotes] = useState('')
@@ -61,6 +78,7 @@ export default function RSVPSection() {
     if (!trimmedName) {
       setPartyId('')
       setPartyGuests([])
+      setIsWeddingParty(false)
       return
     }
 
@@ -79,6 +97,7 @@ export default function RSVPSection() {
         if (!res.ok) {
           setPartyId('')
           setPartyGuests([])
+          setIsWeddingParty(false)
           return
         }
 
@@ -87,14 +106,17 @@ export default function RSVPSection() {
         if (data.found) {
           setPartyId(data.partyId)
           setPartyGuests(data.guests)
+          setIsWeddingParty(data.weddingParty)
         } else {
           setPartyId('')
           setPartyGuests([])
+          setIsWeddingParty(false)
         }
       } catch (error) {
         console.error(error)
         setPartyId('')
         setPartyGuests([])
+        setIsWeddingParty(false)
       } finally {
         setIsCheckingParty(false)
       }
@@ -143,16 +165,22 @@ export default function RSVPSection() {
         }),
       })
 
-      const data = await res.json()
+      const data = (await res.json()) as RSVPSubmitResponse
 
       if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong.')
+        throw new Error('error' in data ? data.error || 'Something went wrong.' : 'Something went wrong.')
+      }
+
+      if ('success' in data && data.weddingParty) {
+        router.push('/wedding-party')
+        return
       }
 
       setStatus('success')
       setName('')
       setPartyId('')
       setPartyGuests([])
+      setIsWeddingParty(false)
       setDietary('nil')
       setDietaryNotes('')
       setSongRecommendation('')

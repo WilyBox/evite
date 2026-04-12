@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       found: true,
       partyId: party.partyId,
       guests: party.guests,
+      weddingParty: party.weddingParty,
     })
   } catch (error) {
     console.error('Party lookup error:', error)
