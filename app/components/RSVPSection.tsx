@@ -172,7 +172,7 @@ export default function RSVPSection() {
       }
 
       if ('success' in data && data.weddingParty) {
-        router.push('/wedding-party')
+        router.push(`/wedding-party?partyId=${encodeURIComponent(data.partyId)}`)
         return
       }
 
