@@ -72,6 +72,9 @@ export default function RSVPSection() {
 
   const hasLinkedGuest = Boolean(linkedGuestName)
 
+  const [drinkPreference, setDrinkPreference] = useState('')
+  const [plusOneDrinkPreference, setPlusOneDrinkPreference] = useState('')
+
   useEffect(() => {
     const trimmedName = name.trim()
 
@@ -156,12 +159,15 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         attendance,
         dietary,
         dietaryNotes,
+        drinkPreference,
         songRecommendation,
         website,
         plusOneName: hasLinkedGuest ? linkedGuestName : '',
         plusOneAttendance: hasLinkedGuest ? plusOneAttendance : undefined,
         plusOneDietary: hasLinkedGuest ? plusOneDietary : 'nil',
         plusOneDietaryNotes: hasLinkedGuest ? plusOneDietaryNotes : '',
+        plusOneDrinkPreference:
+          hasLinkedGuest && plusOneAttendance === 'yes' ? plusOneDrinkPreference : undefined,
       }),
     })
 
@@ -198,252 +204,297 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
             RSVP
           </h2>
 
-          <form onSubmit={handleSubmit} className="mt-14 space-y-10">
-            <fieldset>
-              <legend className="text-center text-sm font-medium text-gray-900">
-                Attendance
-              </legend>
+<form onSubmit={handleSubmit} className="mt-14 space-y-10">
+  <fieldset>
+    <legend className="text-center text-sm font-medium text-gray-900">
+      Attendance
+    </legend>
 
-              <div className="mt-4 flex items-center justify-center gap-8">
-                {[
-                  { id: 'yes', label: "Yes, I'll be there" },
-                  { id: 'no', label: "Sorry, I can't make it" },
-                ].map((option) => (
-                  <div key={option.id} className="flex items-center gap-2">
-                    <input
-                      id={option.id}
-                      name="attendance"
-                      type="radio"
-                      value={option.id}
-                      checked={attendance === option.id}
-                      onChange={(e) => setAttendance(e.target.value as 'yes' | 'no')}
-                      className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
-                    />
-                    <label htmlFor={option.id} className="text-sm text-gray-700">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
+    <div className="mt-4 flex items-center justify-center gap-8">
+      {[
+        { id: 'yes', label: "Yes, I'll be there" },
+        { id: 'no', label: "Sorry, I can't make it" },
+      ].map((option) => (
+        <div key={option.id} className="flex items-center gap-2">
+          <input
+            id={option.id}
+            name="attendance"
+            type="radio"
+            value={option.id}
+            checked={attendance === option.id}
+            onChange={(e) => setAttendance(e.target.value as 'yes' | 'no')}
+            className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
+          />
+          <label htmlFor={option.id} className="text-sm text-gray-700">
+            {option.label}
+          </label>
+        </div>
+      ))}
+    </div>
+  </fieldset>
 
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-900">
-                Name
-              </label>
+  <div>
+    <label htmlFor="name" className="block text-sm font-medium text-gray-900">
+      Name
+    </label>
+    <input
+      id="name"
+      name="name"
+      type="text"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+      placeholder="Your full name"
+      required
+    />
+    {attendance === 'yes' && name.trim() && isCheckingParty && (
+      <p className="mt-2 text-sm text-gray-500">Checking invitation details...</p>
+    )}
+  </div>
+
+  {attendance === 'yes' && (
+    <>
+      <fieldset>
+        <legend className="block text-sm font-medium text-gray-900">
+          Dietary requirements
+        </legend>
+
+        <div className="mt-4 space-y-4">
+          {dietaryOptions.map((option) => (
+            <div key={option.id} className="flex items-center gap-3">
               <input
-                id="name"
-                name="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
-                placeholder="Your full name"
-                required
+                id={`dietary-${option.id}`}
+                name="dietary"
+                type="radio"
+                value={option.id}
+                checked={dietary === option.id}
+                onChange={(e) => setDietary(e.target.value)}
+                className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
               />
-              {attendance === 'yes' && name.trim() && isCheckingParty && (
-                <p className="mt-2 text-sm text-gray-500">Checking invitation details...</p>
-              )}
+              <label htmlFor={`dietary-${option.id}`} className="text-sm text-gray-700">
+                {option.name}
+              </label>
             </div>
+          ))}
+        </div>
 
-            {attendance === 'yes' && (
-              <>
-                <fieldset>
-                  <legend className="block text-sm font-medium text-gray-900">
-                    Dietary requirements
-                  </legend>
+        {dietary === 'other' && (
+          <div className="mt-6">
+            <label htmlFor="dietaryNotes" className="block text-sm font-medium text-gray-900">
+              Please specify
+            </label>
+            <textarea
+              id="dietaryNotes"
+              name="dietaryNotes"
+              rows={3}
+              value={dietaryNotes}
+              onChange={(e) => setDietaryNotes(e.target.value)}
+              className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+              placeholder="Any allergies, religious requirements, or other dietary notes"
+              required={dietary === 'other'}
+            />
+          </div>
+        )}
+      </fieldset>
 
-                  <div className="mt-4 space-y-4">
-                    {dietaryOptions.map((option) => (
-                      <div key={option.id} className="flex items-center gap-3">
-                        <input
-                          id={`dietary-${option.id}`}
-                          name="dietary"
-                          type="radio"
-                          value={option.id}
-                          checked={dietary === option.id}
-                          onChange={(e) => setDietary(e.target.value)}
-                          className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
-                        />
-                        <label htmlFor={`dietary-${option.id}`} className="text-sm text-gray-700">
-                          {option.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+      <div>
+        <label htmlFor="drinkPreference" className="block text-sm font-medium text-gray-900">
+          Drink preference
+        </label>
+        <select
+          id="drinkPreference"
+          name="drinkPreference"
+          value={drinkPreference}
+          onChange={(e) => setDrinkPreference(e.target.value)}
+          className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+          required
+        >
+          <option value="">Select a drink</option>
+          <option value="Red wine">Red wine</option>
+          <option value="White wine">White wine</option>
+          <option value="Rosé">Rosé</option>
+          <option value="Non-Alcoholic">Non-Alcoholic</option>
+        </select>
+      </div>
 
-                  {dietary === 'other' && (
-                    <div className="mt-6">
-                      <label htmlFor="dietaryNotes" className="block text-sm font-medium text-gray-900">
-                        Please specify
-                      </label>
-                      <textarea
-                        id="dietaryNotes"
-                        name="dietaryNotes"
-                        rows={3}
-                        value={dietaryNotes}
-                        onChange={(e) => setDietaryNotes(e.target.value)}
-                        className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
-                        placeholder="Any allergies, religious requirements, or other dietary notes"
-                        required={dietary === 'other'}
+      {hasLinkedGuest && (
+        <div className="space-y-8 rounded-xl border border-stone-200 bg-white/70 p-6">
+          <div>
+            <h3 className="text-base font-semibold text-gray-900">Linked guest</h3>
+            <p className="mt-1 text-sm text-gray-600">
+              We found another guest on your invitation.
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-gray-900">Guest</p>
+            <p className="mt-1 text-sm text-gray-700">{linkedGuestName}</p>
+          </div>
+
+          <fieldset>
+            <legend className="text-center text-sm font-medium text-gray-900">
+              Will {linkedGuestName} attend?
+            </legend>
+
+            <div className="mt-4 flex items-center justify-center gap-8">
+              {[
+                { id: 'yes', label: "Yes, they'll be there" },
+                { id: 'no', label: "No, they can't make it" },
+              ].map((option) => (
+                <div key={option.id} className="flex items-center gap-2">
+                  <input
+                    id={`linkedguest-attendance-${option.id}`}
+                    name="plusOneAttendance"
+                    type="radio"
+                    value={option.id}
+                    checked={plusOneAttendance === option.id}
+                    onChange={(e) =>
+                      setPlusOneAttendance(e.target.value as 'yes' | 'no')
+                    }
+                    className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
+                  />
+                  <label
+                    htmlFor={`linkedguest-attendance-${option.id}`}
+                    className="text-sm text-gray-700"
+                  >
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+
+          {plusOneAttendance === 'yes' && (
+            <>
+              <fieldset>
+                <legend className="block text-sm font-medium text-gray-900">
+                  {linkedGuestName}&apos;s dietary requirements
+                </legend>
+
+                <div className="mt-4 space-y-4">
+                  {dietaryOptions.map((option) => (
+                    <div key={option.id} className="flex items-center gap-3">
+                      <input
+                        id={`plusone-dietary-${option.id}`}
+                        name="plusOneDietary"
+                        type="radio"
+                        value={option.id}
+                        checked={plusOneDietary === option.id}
+                        onChange={(e) => setPlusOneDietary(e.target.value)}
+                        className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
                       />
+                      <label
+                        htmlFor={`plusone-dietary-${option.id}`}
+                        className="text-sm text-gray-700"
+                      >
+                        {option.name}
+                      </label>
                     </div>
-                  )}
-                </fieldset>
+                  ))}
+                </div>
 
-                {hasLinkedGuest && (
-                  <div className="space-y-8 rounded-xl border border-stone-200 bg-white/70 p-6">
-                    <div>
-                      <h3 className="text-base font-semibold text-gray-900">Linked guest</h3>
-                      <p className="mt-1 text-sm text-gray-600">
-                        We found another guest on your invitation.
-                      </p>
-                    </div>
-
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Guest</p>
-                      <p className="mt-1 text-sm text-gray-700">{linkedGuestName}</p>
-                    </div>
-
-                    <fieldset>
-                      <legend className="text-center text-sm font-medium text-gray-900">
-                        Will {linkedGuestName} attend?
-                      </legend>
-
-                      <div className="mt-4 flex items-center justify-center gap-8">
-                        {[
-                          { id: 'yes', label: "Yes, they'll be there" },
-                          { id: 'no', label: "No, they can't make it" },
-                        ].map((option) => (
-                          <div key={option.id} className="flex items-center gap-2">
-                            <input
-                              id={`linkedguest-attendance-${option.id}`}
-                              name="plusOneAttendance"
-                              type="radio"
-                              value={option.id}
-                              checked={plusOneAttendance === option.id}
-                              onChange={(e) =>
-                                setPlusOneAttendance(e.target.value as 'yes' | 'no')
-                              }
-                              className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
-                            />
-                            <label
-                              htmlFor={`linkedguest-attendance-${option.id}`}
-                              className="text-sm text-gray-700"
-                            >
-                              {option.label}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </fieldset>
-
-                    {plusOneAttendance === 'yes' && (
-                      <fieldset>
-                        <legend className="block text-sm font-medium text-gray-900">
-                          {linkedGuestName}&apos;s dietary requirements
-                        </legend>
-
-                        <div className="mt-4 space-y-4">
-                          {dietaryOptions.map((option) => (
-                            <div key={option.id} className="flex items-center gap-3">
-                              <input
-                                id={`plusone-dietary-${option.id}`}
-                                name="plusOneDietary"
-                                type="radio"
-                                value={option.id}
-                                checked={plusOneDietary === option.id}
-                                onChange={(e) => setPlusOneDietary(e.target.value)}
-                                className="h-4 w-4 border-gray-300 text-stone-900 focus:ring-stone-900"
-                              />
-                              <label
-                                htmlFor={`plusone-dietary-${option.id}`}
-                                className="text-sm text-gray-700"
-                              >
-                                {option.name}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-
-                        {plusOneDietary === 'other' && (
-                          <div className="mt-6">
-                            <label
-                              htmlFor="plusOneDietaryNotes"
-                              className="block text-sm font-medium text-gray-900"
-                            >
-                              Please specify
-                            </label>
-                            <textarea
-                              id="plusOneDietaryNotes"
-                              name="plusOneDietaryNotes"
-                              rows={3}
-                              value={plusOneDietaryNotes}
-                              onChange={(e) => setPlusOneDietaryNotes(e.target.value)}
-                              className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
-                              placeholder="Any allergies, religious requirements, or other dietary notes"
-                              required={plusOneAttendance === 'yes' && plusOneDietary === 'other'}
-                            />
-                          </div>
-                        )}
-                      </fieldset>
-                    )}
+                {plusOneDietary === 'other' && (
+                  <div className="mt-6">
+                    <label
+                      htmlFor="plusOneDietaryNotes"
+                      className="block text-sm font-medium text-gray-900"
+                    >
+                      Please specify
+                    </label>
+                    <textarea
+                      id="plusOneDietaryNotes"
+                      name="plusOneDietaryNotes"
+                      rows={3}
+                      value={plusOneDietaryNotes}
+                      onChange={(e) => setPlusOneDietaryNotes(e.target.value)}
+                      className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+                      placeholder="Any allergies, religious requirements, or other dietary notes"
+                      required={plusOneAttendance === 'yes' && plusOneDietary === 'other'}
+                    />
                   </div>
                 )}
+              </fieldset>
 
-                <div>
-                  <label
-                    htmlFor="songRecommendation"
-                    className="block text-sm font-medium text-gray-900"
-                  >
-                    Song recommendation
-                  </label>
-                  <textarea
-                    id="songRecommendation"
-                    name="songRecommendation"
-                    rows={4}
-                    value={songRecommendation}
-                    onChange={(e) => setSongRecommendation(e.target.value)}
-                    className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
-                    placeholder="Any song you'd love to hear on the night"
-                  />
-                </div>
-              </>
-            )}
+              <div>
+                <label
+                  htmlFor="plusOneDrinkPreference"
+                  className="block text-sm font-medium text-gray-900"
+                >
+                  {linkedGuestName}&apos;s drink preference
+                </label>
+                <select
+                  id="plusOneDrinkPreference"
+                  name="plusOneDrinkPreference"
+                  value={plusOneDrinkPreference}
+                  onChange={(e) => setPlusOneDrinkPreference(e.target.value)}
+                  className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+                  required={plusOneAttendance === 'yes'}
+                >
+                  <option value="">Select a drink</option>
+                  <option value="Red wine">Red wine</option>
+                  <option value="White wine">White wine</option>
+                  <option value="Rosé">Rosé</option>
+                  <option value="Non-Alcoholic">Non-Alcoholic</option>
+                </select>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
-            <div className="hidden">
-              <label htmlFor="website">Website</label>
-              <input
-                id="website"
-                name="website"
-                type="text"
-                tabIndex={-1}
-                autoComplete="off"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-              />
-            </div>
+      <div>
+        <label
+          htmlFor="songRecommendation"
+          className="block text-sm font-medium text-gray-900"
+        >
+          Song recommendation
+        </label>
+        <textarea
+          id="songRecommendation"
+          name="songRecommendation"
+          rows={4}
+          value={songRecommendation}
+          onChange={(e) => setSongRecommendation(e.target.value)}
+          className="mt-3 block w-full rounded-md bg-white px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+          placeholder="Any song you'd love to hear on the night"
+        />
+      </div>
+    </>
+  )}
 
-            <div className="pt-2 text-center">
-              <button
-                type="submit"
-                disabled={status === 'submitting'}
-                className="rounded-md bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {status === 'submitting' ? 'Sending...' : 'Submit'}
-              </button>
-            </div>
+  <div className="hidden">
+    <label htmlFor="website">Website</label>
+    <input
+      id="website"
+      name="website"
+      type="text"
+      tabIndex={-1}
+      autoComplete="off"
+      value={website}
+      onChange={(e) => setWebsite(e.target.value)}
+    />
+  </div>
 
-            {status === 'success' && (
-              <p className="text-center text-sm text-green-700">
-                Thank you — your RSVP has been sent.
-              </p>
-            )}
+  <div className="pt-2 text-center">
+    <button
+      type="submit"
+      disabled={status === 'submitting'}
+      className="rounded-md bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {status === 'submitting' ? 'Sending...' : 'Submit'}
+    </button>
+  </div>
 
-            {status === 'error' && (
-              <p className="text-center text-sm text-red-700">{errorMessage}</p>
-            )}
-          </form>
+  {status === 'success' && (
+    <p className="text-center text-sm text-green-700">
+      Thank you — your RSVP has been sent.
+    </p>
+  )}
+
+  {status === 'error' && (
+    <p className="text-center text-sm text-red-700">{errorMessage}</p>
+  )}
+</form>
         </div>
       </div>
     </section>

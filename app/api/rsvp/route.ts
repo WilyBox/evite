@@ -19,11 +19,14 @@ type RSVPBody = {
   dietaryNotes?: string
   songRecommendation?: string
   website?: string
+  drinkPreference?: string
   attendance?: 'yes' | 'no'
   plusOneAttendance?: 'yes' | 'no'
   plusOneName?: string
   plusOneDietary?: string
   plusOneDietaryNotes?: string
+  plusOneDrinkPreference?: string
+  plusOneDrinkPreferenceConfirmed?: boolean
 }
 
 export async function POST(req: Request) {
@@ -48,11 +51,13 @@ export async function POST(req: Request) {
       dietary,
       dietaryNotes,
       songRecommendation,
+      drinkPreference,
       website,
       plusOneAttendance,
       plusOneName,
       plusOneDietary,
       plusOneDietaryNotes,
+      plusOneDrinkPreference,
     } = (await req.json()) as RSVPBody
 
     // Honeypot
@@ -93,6 +98,11 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Dietary requirement is required.' }, { status: 400 })
       }
 
+
+      if (!drinkPreference?.trim()) {
+        return NextResponse.json({ error: 'Drink preference is required.' }, { status: 400 })
+      }
+
       if (dietary === 'other' && !dietaryNotes?.trim()) {
         return NextResponse.json(
           { error: 'Please specify your dietary requirements.' },
@@ -114,6 +124,13 @@ export async function POST(req: Request) {
     if (!linkedGuestName) {
       return NextResponse.json(
         { error: 'No linked guest found for this invite.' },
+        { status: 400 }
+      )
+    }
+
+    if (!plusOneDrinkPreference?.trim()) {
+      return NextResponse.json(
+        { error: 'Linked guest drink preference is required.' },
         { status: 400 }
       )
     }
@@ -219,7 +236,7 @@ Party ID: ${party.partyId}
 Wedding party: ${party.weddingParty ? 'Yes' : 'No'}
 Name: ${cleanName}
 Attendance: ${attendance}
-
+Drink preference: ${drinkPreference?.trim() || 'None provided'}
 Dietary requirement: ${formattedDietary}
 Song recommendation: ${songRecommendation?.trim() || 'None provided'}
 
@@ -227,6 +244,7 @@ Linked guest exists: ${hasLinkedGuest ? 'Yes' : 'No'}
 Linked guest name: ${hasLinkedGuest ? linkedGuestName : 'N/A'}
 Linked guest attendance: ${hasLinkedGuest && attendance === 'yes' ? plusOneAttendance || 'Not provided' : 'N/A'}
 Linked guest dietary requirement: ${formattedLinkedGuestDietary}
+Linked guest drink preference: ${hasLinkedGuest && attendance === 'yes' && plusOneAttendance === 'yes' ? plusOneDrinkPreference?.trim() || 'None provided' : 'N/A'}
 
 IP: ${ip}
 `,
