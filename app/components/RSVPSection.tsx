@@ -140,60 +140,53 @@ export default function RSVPSection() {
     }
   }, [plusOneAttendance])
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setStatus('submitting')
-    setErrorMessage('')
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault()
+  setStatus('submitting')
+  setErrorMessage('')
 
-    try {
-      const res = await fetch('/api/rsvp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          attendance,
-          dietary,
-          dietaryNotes,
-          songRecommendation,
-          website,
-          plusOneName: hasLinkedGuest ? linkedGuestName : '',
-          plusOneAttendance: hasLinkedGuest ? plusOneAttendance : undefined,
-          plusOneDietary: hasLinkedGuest ? plusOneDietary : 'nil',
-          plusOneDietaryNotes: hasLinkedGuest ? plusOneDietaryNotes : '',
-        }),
-      })
+  try {
+    const res = await fetch('/api/rsvp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        attendance,
+        dietary,
+        dietaryNotes,
+        songRecommendation,
+        website,
+        plusOneName: hasLinkedGuest ? linkedGuestName : '',
+        plusOneAttendance: hasLinkedGuest ? plusOneAttendance : undefined,
+        plusOneDietary: hasLinkedGuest ? plusOneDietary : 'nil',
+        plusOneDietaryNotes: hasLinkedGuest ? plusOneDietaryNotes : '',
+      }),
+    })
 
-      const data = (await res.json()) as RSVPSubmitResponse
+    const data = (await res.json()) as RSVPSubmitResponse
 
-      if (!res.ok) {
-        throw new Error('error' in data ? data.error || 'Something went wrong.' : 'Something went wrong.')
-      }
+    if (!res.ok) {
+      throw new Error(
+        'error' in data ? data.error || 'Something went wrong.' : 'Something went wrong.'
+      )
+    }
 
-      if ('success' in data && data.weddingParty) {
+    if ('success' in data) {
+      if (data.weddingParty) {
         router.push(`/wedding-party?partyId=${encodeURIComponent(data.partyId)}`)
         return
       }
 
-      setStatus('success')
-      setName('')
-      setPartyId('')
-      setPartyGuests([])
-      setIsWeddingParty(false)
-      setDietary('nil')
-      setDietaryNotes('')
-      setSongRecommendation('')
-      setWebsite('')
-      setPlusOneAttendance('yes')
-      setPlusOneDietary('nil')
-      setPlusOneDietaryNotes('')
-      setAttendance('yes')
-    } catch (error) {
-      setStatus('error')
-      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong.')
+      router.push('/accommodation')
+      return
     }
+  } catch (error) {
+    setStatus('error')
+    setErrorMessage(error instanceof Error ? error.message : 'Something went wrong.')
   }
+}
 
   return (
     <section className="bg-stone-50 py-24 sm:py-32">
