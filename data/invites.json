@@ -1,5 +1,13 @@
 [
   {
+    "partyId": "rafiq-1",
+    "weddingParty": true,
+    "guests": [
+      "Hashim Rafiq",
+      "Hugh Doohan"
+    ]
+  },
+  {
     "partyId": "maclean-1",
     "weddingParty": true,
     "guests": [
@@ -196,7 +204,7 @@
     "partyId": "x-1",
     "weddingParty": false,
     "guests": [
-      "Ann X",
+      "Anne X",
       "X"
     ]
   },
