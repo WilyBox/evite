@@ -1,13 +1,5 @@
 const placesToStay = [
   {
-    name: 'Dunglass Estate Accommodation',
-    type: 'On-estate self-catering',
-    area: 'Dunglass Estate',
-    description:
-      'The estate itself has accommodation options, including Seaview House, which is a four-bedroom self-catering property with a private garden.',
-    href: 'https://dunglassestate.com/accommodation/',
-  },
-  {
     name: 'Allanton Inn',
     type: 'Inn',
     area: 'Allanton, Berwickshire',
