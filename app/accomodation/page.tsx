@@ -1,43 +1,59 @@
 const placesToStay = [
   {
-    name: 'Allanton Inn',
-    type: 'Inn',
-    area: 'Allanton, Berwickshire',
+    name: 'Bayswell Park Hotel',
+    type: 'Hotel',
+    area: 'Dunbar',
     description:
-      'A charming coaching inn in the village of Allanton, with en-suite rooms and a good option for guests who want a traditional inn stay.',
-    href: 'https://www.allantoninn.co.uk/',
+      '',
+    href: 'https://bayswellparkhotel.com/',
   },
   {
-    name: 'The Plough Inn',
-    type: 'Inn / B&B',
-    area: 'Leitholm, near Coldstream',
+    name: 'Wigwam Holidays Cove Farm',
+    type: 'Holiday park',
+    area: 'Cockburnspath',
     description:
-      'Family-run inn offering en-suite rooms with B&B and dinner, bed & breakfast options.',
-    href: 'http://www.theploughinnleitholm.co.uk/',
+      '',
+    href: 'https://www.wigwamholidays.com/cove-farm',
   },
   {
-    name: 'Duns Castle Holiday Cottages',
-    type: 'Self-catering cottages',
-    area: 'Duns',
+    name: 'Hideaway Cottage',
+    type: 'Airbnb',
+    area: 'Cockburnspath',
     description:
-      'Cottages set within the Duns Castle estate, suited to couples, families, and guests wanting a more private stay.',
-    href: 'https://dunscastleholidaycottages.co.uk/',
+      '',
+    href: 'https://www.airbnb.co.uk/rooms/40721945?check_in=2024-03-05&check_out=2024-03-10&guests=1&adults=1&s=67&unique_share_id=a1693629-dff4-47f8-b3cc-6032a99d0ff6',
   },
   {
-    name: 'The White House',
+    name: 'Ferneylea Loft Lodge',
+    type: 'B&B',
+    area: 'Cockburnspath',
+    description:
+      '',
+    href: 'https://www.airbnb.co.uk/rooms/27229648?check_in=2024-02-16&check_out=2024-02-21&guests=1&adults=1&s=67&unique_share_id=e7b0c133-ce8c-4c0d-a90d-1aa6a2a49030',
+  },
+  {
+    name: 'Dene House',
     type: 'Holiday home',
-    area: 'Duns',
+    area: 'Cockburnspath',
     description:
-      'A period cottage on the outskirts of Duns, useful for guests wanting a house-style stay close to town.',
-    href: 'https://www.crabtreeandcrabtree.com/properties/the-white-house/',
+      '',
+    href: 'https://www.airbnb.co.uk/rooms/851280439007737362?check_in=2024-02-23&check_out=2024-02-26&guests=1&adults=1&s=67&unique_share_id=e7ae0bdf-d744-402d-b6b3-b8a0ca3e00d2',
   },
   {
-    name: 'Green Hope',
+    name: 'Culzean Cottage',
     type: 'Guest house / self-catering',
-    area: 'Scottish Borders',
+    area: 'Cockburnspath',
     description:
       'A modern, eco-friendly guest accommodation option with parking and family-friendly outdoor space.',
-    href: 'https://greenhope.co.uk/',
+    href: 'https://www.airbnb.co.uk/rooms/8116331?check_in=2024-02-26&check_out=2024-03-01&guests=1&adults=1&s=67&unique_share_id=5d71241e-8ba3-4cd7-acfc-4cd5188a2007',
+  },
+  {
+    name: 'Farm Cottage',
+    type: 'Airbnb',
+    area: 'Cockburnspath',
+    description:
+      '',
+    href: 'https://www.airbnb.co.uk/rooms/550689617915666640?check_in=2024-06-10&check_out=2024-06-15&guests=1&adults=1&s=67&unique_share_id=b925c716-5ff7-42c8-a879-6a4ca0bcc659',
   },
 ]
 
