@@ -8,12 +8,36 @@ const placesToStay = [
     href: 'https://bayswellparkhotel.com/',
   },
   {
-    name: 'Wigwam Holidays Cove Farm',
-    type: 'Holiday park',
+    name: 'Hillcrest Bed & Breakfast',
+    type: 'B&B',
     area: 'Cockburnspath',
     description:
       '',
     href: 'https://www.wigwamholidays.com/cove-farm',
+  },
+  {
+    name: 'The Ships Quarters',
+    type: 'Hotel',
+    area: 'Eyemouth',
+    description:
+      '',
+    href: 'https://bayswellparkhotel.com/',
+  },
+  {
+    name: 'Eyesleepover',
+    type: 'Hotel',
+    area: 'Eyemouth',
+    description:
+      '',
+    href: 'https://bayswellparkhotel.com/',
+  },
+    {
+    name: 'Eyesleepover',
+    type: 'Hotel',
+    area: 'Eyemouth',
+    description:
+      '',
+    href: 'https://bayswellparkhotel.com/',
   },
   {
     name: 'Hideaway Cottage',
