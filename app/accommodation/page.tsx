@@ -13,7 +13,7 @@ const placesToStay = [
     area: 'Cockburnspath',
     description:
       '',
-    href: 'https://www.wigwamholidays.com/cove-farm',
+    href: 'https://www.booking.com/Share-S0l8UWk',
   },
   {
     name: 'The Ships Quarters',
@@ -21,23 +21,15 @@ const placesToStay = [
     area: 'Eyemouth',
     description:
       '',
-    href: 'https://bayswellparkhotel.com/',
+    href: 'http://www.theshipsquarters.com/',
   },
   {
-    name: 'Eyesleepover',
+    name: 'The Eyesleepover',
     type: 'Hotel',
     area: 'Eyemouth',
     description:
       '',
-    href: 'https://bayswellparkhotel.com/',
-  },
-    {
-    name: 'Eyesleepover',
-    type: 'Hotel',
-    area: 'Eyemouth',
-    description:
-      '',
-    href: 'https://bayswellparkhotel.com/',
+    href: 'https://www.eyesleep.co.uk/reviews',
   },
   {
     name: 'Hideaway Cottage',
@@ -87,10 +79,10 @@ export default function AccommodationPage() {
       <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8 lg:px-10">
         <div className="max-w-3xl">
           <p className="text-sm uppercase tracking-[0.25em] text-stone-500">
-            Accommodation
+            Places to stay
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Places to stay near Duns & Dunglass Estate
+            Recommended Accommodation
           </h1>
           <p className="mt-5 text-base leading-7 text-stone-600 sm:text-lg">
             For guests travelling to our wedding in Duns, with the reception at

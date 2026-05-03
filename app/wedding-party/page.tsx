@@ -101,61 +101,101 @@ export default async function WeddingPartyPage({ searchParams }: Props) {
     notFound()
   }
 
-  return (
-  <main className="bg-stone-50">
-    <section className="relative flex min-h-[34vh] items-center justify-center overflow-hidden md:min-h-[42vh]">
-      <img
-        src="/images/location/church3.jpg"
-        alt="Church near the wedding venue"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-      />
-
-      <div className="absolute inset-0 bg-black/35" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-stone-50" />
-
-      <div className="relative z-10 px-6 text-center text-white">
-        <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
-          Wedding Party
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-white/90 md:text-base">
-          Your accommodation details are below. Each apartment includes its own
-          kitchen, so you will have space to prepare breakfast, snacks, or any
-          essentials during your stay.
-        </p>
+return (
+    <main className="relative min-h-screen w-full selection:bg-stone-800 selection:text-white">
+      
+      {/* 1. Full-Page Fixed Background Image */}
+      <div className="fixed inset-0 z-0">
+        {/* Note: If you want Next.js image optimization, swap <img> for <Image src="..." fill className="object-cover" /> */}
+        <img
+          src="/images/location/courtyard2.webp"
+          alt="Church near the wedding venue"
+          className="h-full w-full object-cover object-center"
+        />
+        {/* Dark overlay to ensure text/cards pop */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
       </div>
-    </section>
 
-    <section className="mx-auto max-w-2xl px-6 py-12 md:py-16">
-      <div>
-        <h2 className="text-lg font-medium text-stone-900">Guests</h2>
+      {/* 2. Scrolling Content Wrapper */}
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col px-6 py-16 md:py-24">
+        
+        {/* Header / Info Card (Glassmorphism effect) */}
+        <section className="mb-12 md:mb-16 rounded-3xl border border-white/20 bg-black/30 p-8 text-center shadow-2xl backdrop-blur-md md:p-12">
+          <h1 className="text-4xl font-light tracking-wide text-white md:text-5xl lg:text-6xl">
+            Wedding Party
+          </h1>
+          <div className="mx-auto mt-6 h-px w-16 bg-white/40" />
+          <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-white/90 md:text-base lg:text-lg">
+            Your accommodation is at the wedding venue (<span className="font-bold">Dunglass Estate</span>). 
+            Travel is provided between the ceremony and venue. 
+            Access to the accomodation from 4pm, checkout on Saturday is at 11am.
+            There will be food available, and each apartment includes its own kitchen and facilities.
+          </p>
+        </section>
 
-        <ul className="mt-4 space-y-4">
-          {party.guests.map((guest) => {
-            const key = normaliseKey(guest)
+        {/* Guest Cards Grid */}
+        <section>
+          <div className="mb-6 flex items-center justify-between border-b border-white/20 pb-2">
+            <h2 className="text-xl font-medium tracking-wide text-white">Guest Locations</h2>
+          </div>
 
-            const day1House = day1Lookup[key] ?? 'TBC'
-            const day2House = day2Lookup[key] ?? 'TBC'
+          <ul className="grid gap-6 sm:grid-cols-2 lg:gap-8">
+            {party.guests.map((guest: string) => {
+              const key = normaliseKey(guest)
+              const day1House = day1Lookup[key] ?? 'TBC'
+              const day2House = day2Lookup[key] ?? 'TBC'
 
-            return (
-              <li
-                key={guest}
-                className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
-              >
-                <p className="font-medium text-stone-900">{guest}</p>
+              return (
+<li
+  key={guest}
+  className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-xl transition-all hover:-translate-y-1 hover:shadow-2xl"
+>
+  {/* --- The Foliage Full-Card Background --- */}
+  {/* inset-0, h-full, w-full, and object-cover make it fill the whole card */}
+  <img
+    src="/images/location/foliage.png"
+    alt=""
+    aria-hidden="true"
+    className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-100 transition-transform duration-700 group-hover:scale-105"
+  />
 
-                <p className="mt-2 text-sm text-gray-700">
-                  <span className="font-medium">Day 1:</span> {day1House}
-                </p>
+  {/* Card Header */}
+  {/* Removed the background and blur so the image shows through cleanly */}
+  <div className="relative z-10 border-b border-stone-200/50 px-6 py-4">
+    <p className="text-lg font-medium text-stone-900 text-center">{guest}</p>
+  </div>
 
-                <p className="text-sm text-gray-700">
-                  <span className="font-medium">Day 2:</span> {day2House}
-                </p>
-              </li>
-            )
-          })}
-        </ul>
+  {/* Card Body: Accommodation Details */}
+  <div className="relative z-10 flex flex-col gap-3 p-6">
+    
+    {/* Inner detail pills */}
+    {/* Changed to a very light, glassy background (white/40) so they sit nicely on top of the foliage */}
+    <div className="flex items-center justify-between rounded-xl border border-white/50 bg-white/40 p-3 px-4 backdrop-blur-[2px]">
+      <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
+        Friday 19th March
+      </span>
+      <span className="text-sm font-medium text-stone-900">
+        {day1House}
+      </span>
+    </div>
+
+    <div className="flex items-center justify-between rounded-xl border border-white/50 bg-white/40 p-3 px-4 backdrop-blur-[2px]">
+      <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
+        Saturday 20th March
+      </span>
+      <span className="text-sm font-medium text-stone-900">
+        {day2House}
+      </span>
+    </div>
+
+  </div>
+</li>
+              )
+            })}
+          </ul>
+        </section>
+
       </div>
-    </section>
-  </main>
-)
+    </main>
+  )
 }

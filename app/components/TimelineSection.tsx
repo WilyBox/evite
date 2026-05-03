@@ -17,7 +17,7 @@ const events = [
     title: 'Reception',
     venue: 'Dunglass Estate',
     location: 'Dunglass, Cockburnspath TD13 5XF',
-    time: '',
+    time: '3:00 PM',
   },
 ]
 
