@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 const placesToStay = [
   {
     name: 'Bayswell Park Hotel',
@@ -79,7 +81,7 @@ export default function AccommodationPage() {
       <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8 lg:px-10">
         <div className="max-w-3xl">
           <p className="text-sm uppercase tracking-[0.25em] text-stone-500">
-            Places to stay
+            Excited to see you there! 🎉
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
             Recommended Accommodation
