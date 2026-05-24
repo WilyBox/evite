@@ -87,8 +87,7 @@ export default function AccommodationPage() {
             Recommended Accommodation
           </h1>
           <p className="mt-5 text-base leading-7 text-stone-600 sm:text-lg">
-            For guests travelling to our wedding in Duns, with the reception at
-            Dunglass Estate, here are some nearby hotels, inns, cottages and
+            For guests travelling to our wedding, here are some nearby hotels, inns, cottages and
             guest accommodation options to consider.
           </p>
           <p className="mt-3 text-sm leading-6 text-stone-500">
