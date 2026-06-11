@@ -90,14 +90,16 @@ export default function AccommodationPage() {
             For guests travelling to our wedding, here are some nearby hotels, inns, cottages and
             guest accommodation options to consider.
           </p>
-          <p className="mt-3 text-sm leading-6 text-stone-500">
+          <p className="mt-3 text-base leading-6 text-stone-500">
             We recommend booking early, especially if you are planning to stay
             over the wedding weekend.
           </p>
 
-          <p className="mt-4 text-sm leading-relaxed text-stone-600 md:text-base">
+          <p className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
             The best gift is having you celebrate with us. Please don't feel the need to bring gifts. 
+            <span style={{ color: 'green' }}>
             If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
+            </span>
           </p>
         </div>
 

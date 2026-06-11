@@ -138,9 +138,11 @@ export default async function WeddingPartyPage({ searchParams }: Props) {
             own kitchen and facilities.
           </p>
 
-          <p className="mt-4 text-sm leading-relaxed text-stone-600 md:text-base">
+          <p className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
             The best gift is having you celebrate with us. Please don't feel the need to bring gifts. 
+            <span style={{ color: 'green' }}>
             If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
+            </span>
           </p>
         </section>
 
