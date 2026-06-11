@@ -94,6 +94,11 @@ export default function AccommodationPage() {
             We recommend booking early, especially if you are planning to stay
             over the wedding weekend.
           </p>
+
+          <p className="mt-4 text-sm leading-relaxed text-stone-600 md:text-base">
+            The best gift is having you celebrate with us. Please don't feel the need to bring gifts. 
+            If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
+          </p>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2">

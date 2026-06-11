@@ -133,9 +133,14 @@ export default async function WeddingPartyPage({ searchParams }: Props) {
             Your accommodation is at the wedding venue (
             <span className="font-bold">Dunglass Estate</span>). Travel is
             provided between the ceremony and venue. Access to the accommodation
-            will be available from 4pm on Friday. Checkout on Saturday is at
+            will be available from 4pm on Friday. Checkout on Sunday is at
             11am. There will be food available, and each apartment includes its
             own kitchen and facilities.
+          </p>
+
+          <p className="mt-4 text-sm leading-relaxed text-stone-600 md:text-base">
+            The best gift is having you celebrate with us. Please don't feel the need to bring gifts. 
+            If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
           </p>
         </section>
 
