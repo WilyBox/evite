@@ -12,7 +12,7 @@ type Props = {
 
 const accommodationMap = {
   day1: {
-    'Jaine MacLean': 'Willow Cottage',
+    'Jane MacLean': 'Willow Cottage',
     'Paul MacLean': 'Willow Cottage',
     'Eamon Doohan': 'Willow Cottage',
     'Eileen Doohan': 'Willow Cottage',
@@ -40,7 +40,7 @@ const accommodationMap = {
     'Aleksandra Omiecinska': 'Treehouse',
   },
   day2: {
-    'Jaine MacLean': 'Willow Cottage',
+    'Jane MacLean': 'Willow Cottage',
     'Paul MacLean': 'Willow Cottage',
     'Eamon Doohan': 'Willow Cottage',
     'Eileen Doohan': 'Willow Cottage',
