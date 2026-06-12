@@ -96,9 +96,10 @@ export default function AccommodationPage() {
           </p>
 
           <p className="mt-3 text-2xl text-white font-semibold tracking-tight sm:text-2xl">
-            The best gift is having you celebrate with us. Please don't feel the need to bring gifts. 
+            The best gift is having you celebrate with us. Please don't feel the need to bring gifts.
+            <br />
             <span style={{ color: 'green' }}>
-             <br />If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
+             If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
             </span>
           </p>
         </div>
