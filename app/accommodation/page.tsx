@@ -95,10 +95,10 @@ export default function AccommodationPage() {
             over the wedding weekend.
           </p>
 
-          <p className="mt-3 text-2xl text-stone-600 font-semibold tracking-tight sm:text-2xl">
+          <p className="mt-3 text-2xl text-white font-semibold tracking-tight sm:text-2xl">
             The best gift is having you celebrate with us. Please don't feel the need to bring gifts. 
             <span style={{ color: 'green' }}>
-            If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
+             <br />If you feel the need to give something, we'd much rather you donate to our honeymoon or future home fund 🎉
             </span>
           </p>
         </div>
