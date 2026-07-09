@@ -384,11 +384,26 @@
     ]
   },
   {
-    "partyId": "collin-1",
+    "partyId": "colin-1",
     "weddingParty": false,
     "guests": [
-      "Collin MacDonald",
+      "Colin McDonald",
       "Tricia Middleton"
+    ]
+  },
+  {
+    "partyId": "quinian-1",
+    "weddingParty": false,
+    "guests": [
+      "Bridget Quinian"
+    ]
+  },
+  {
+    "partyId": "mcallister-1",
+    "weddingParty": false,
+    "guests": [
+      "Frances McAllister",
+      "Anna McAllister"
     ]
   },
   {
