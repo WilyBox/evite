@@ -1,6 +1,7 @@
 import './globals.css'
 
 import {  Playfair_Display, Italianno, Inter, Great_Vibes } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 
 const italianno = Italianno({
   subsets: ['latin'],
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${italianno.className} ${inter.className}`}>
         {children}
+        <Analytics />
       </body>
     </html>
   )
