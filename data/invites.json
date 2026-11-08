@@ -182,6 +182,14 @@
     ]
   },
   {
+    "partyId": "hayes-1",
+    "weddingParty": false,
+    "guests": [
+      "Sheron Hayes",
+      "Jim Hayes"
+    ]
+  },
+  {
     "partyId": "buchan-1",
     "weddingParty": false,
     "guests": [

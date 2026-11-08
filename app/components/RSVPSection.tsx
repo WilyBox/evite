@@ -48,6 +48,7 @@ export default function RSVPSection() {
 
   const [attendance, setAttendance] = useState<'yes' | 'no'>('yes')
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [partyId, setPartyId] = useState('')
   const [partyGuests, setPartyGuests] = useState<string[]>([])
   const [isCheckingParty, setIsCheckingParty] = useState(false)
@@ -158,6 +159,7 @@ export default function RSVPSection() {
         },
         body: JSON.stringify({
           name,
+          email,
           attendance,
           dietary,
           dietaryNotes,
@@ -260,6 +262,25 @@ export default function RSVPSection() {
                 <p className="mt-2 text-sm text-gray-500">Checking invitation details...</p>
               )}
             </div>
+
+            <div>
+              <label
+    htmlFor="email"
+    className="block text-sm font-medium text-gray-900"
+  >
+    Email address
+  </label>
+  <input
+    id="email"
+    name="email"
+    type="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    className="mt-3 block w-full rounded-xl bg-white/85 px-4 py-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-stone-900"
+    placeholder="Your email address"
+    required
+  />
+</div>
 
             {attendance === 'yes' && (
               <>

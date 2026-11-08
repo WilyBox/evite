@@ -15,6 +15,7 @@ function getClientIp(req: Request) {
 
 type RSVPBody = {
   name?: string
+  email?: string
   dietary?: string
   dietaryNotes?: string
   songRecommendation?: string
@@ -48,6 +49,7 @@ export async function POST(req: Request) {
     const {
       attendance,
       name,
+      email,
       dietary,
       dietaryNotes,
       songRecommendation,
@@ -247,6 +249,7 @@ Linked guest dietary requirement: ${formattedLinkedGuestDietary}
 Linked guest drink preference: ${hasLinkedGuest && attendance === 'yes' && plusOneAttendance === 'yes' ? plusOneDrinkPreference?.trim() || 'None provided' : 'N/A'}
 
 IP: ${ip}
+Email: ${email}
 `,
     }
 
